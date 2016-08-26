@@ -165,14 +165,18 @@ int main(int argc, char* argv[]) {
 
 	//search for max of r, theta
 	double maxr = 0;
-	double maxtheta = 0;
+	double maxtheta = -1e30;
+	double mintheta = 1e30;
 	REP(i, cellPoints.size()) {
 		for (Point p : cellPoints[i]) {
 			Polar po = p.GetPolar();
 			maxr = max(maxr, po.r);
 			maxtheta = max(maxtheta, po.theta);
+			mintheta = min(mintheta, po.theta);
 		}
 	}
+	// cerr << "maxtheta:" << maxtheta << endl;
+	// cerr << "mintheta:" << mintheta << endl;
 
 	// divition r and theta, and classification
 	map<tuple<int, int, int>, vector<int> > cellNum;
@@ -184,13 +188,13 @@ int main(int argc, char* argv[]) {
 		for (Point p : cellPoints[i]) {
 			Polar po = p.GetPolar();
 			localMaxr = max(localMaxr, po.r);
-			localMaxtheta = max(localMaxtheta, po.theta);
+			localMaxtheta = max(localMaxtheta, po.theta - mintheta);
 			localMinz = min(localMinz, po.z);
 		}
-		cout << "z:" << localMinz << " r:" << localMaxr << " theta:" << localMaxtheta << endl;;
+		// cout << "z:" << localMinz << " r:" << localMaxr << " theta:" << localMaxtheta << endl;;
 		double divedR = maxr / rDiv + EPS; //dived r
-		double divedTheta = maxtheta / thetaDiv + EPS; // dived theta
-		double isCutz = (localMinz < cutz + EPS);
+		double divedTheta = (maxtheta - mintheta) / thetaDiv + EPS; // dived theta
+		int isCutz = (localMinz < cutz + EPS);
 
 		cellNum[make_tuple(int(localMaxr / divedR), (int(localMaxtheta / divedTheta) == thetaDiv-1 ? 0 : int(localMaxtheta/divedTheta)), isCutz)].push_back(i);
 	}
@@ -199,3 +203,5 @@ int main(int argc, char* argv[]) {
 
 	return 0;
 }
+	double minr = 1e30;
+	double mintheta = 1e30;
