@@ -1,0 +1,34 @@
+#!/bin/bash
+
+if [ $# -ne 4 ]; then
+	echo "run dir rdiv zcut rtheta"
+	exit 1
+fi
+
+make
+
+echo " /*--------------------------------*- C++ -*----------------------------------*\\ " > cellDecomposition
+echo " | =========                 |                                                 | " >> cellDecomposition
+echo " | \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           | " >> cellDecomposition
+echo " |  \\    /   O peration     | Version:  2.4.0                                 | " >> cellDecomposition
+echo " |   \\  /    A nd           | Web:      www.OpenFOAM.org                      | " >> cellDecomposition
+echo " |    \\/     M anipulation  |                                                 | " >> cellDecomposition
+echo " \\*---------------------------------------------------------------------------*/ " >> cellDecomposition
+echo " FoamFile                                                                        " >> cellDecomposition
+echo " {                                                                               " >> cellDecomposition
+echo "     version     2.0;                                                            " >> cellDecomposition
+echo "     format      ascii;                                                          " >> cellDecomposition
+echo "     class       labelList;                                                      " >> cellDecomposition
+echo "     location    "constant";                                                     " >> cellDecomposition
+echo "     object      cellDecomposition;                                              " >> cellDecomposition
+echo " }                                                                               " >> cellDecomposition
+echo " // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * // " >> cellDecomposition
+echo >> cellDecomposition
+
+./makeData $1
+./baumkuchen $2 $3 $4 out >> cellDecomposition
+
+echo >> cellDecomposition
+echo "// ************************************************************************* // " >> cellDecomposition
+
+rm -r out

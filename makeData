@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir out
+ cat ${1}owner | sed '$d' | sed -e '1,17d' | tr '(' ' ' | tr ')' ' ' > out/owner
+ cat ${1}neighbour | sed '$d' | sed -e '1,17d' | tr '(' ' ' | tr ')' ' ' > out/neighbour
+ cat ${1}points | sed '$d' | sed -e '1,17d' | tr '(' ' ' | tr ')' ' ' > out/points
+ cat ${1}faces | sed '$d' | sed -e '1,17d' | tr '(' ' ' | tr ')' ' ' > out/faces
