@@ -196,12 +196,11 @@ int main(int argc, char* argv[]) {
 		double divedTheta = (maxtheta - mintheta) / thetaDiv + EPS; // dived theta
 		int isCutz = (localMinz < cutz + EPS);
 
-		cellNum[make_tuple(int(localMaxr / divedR), (int(localMaxtheta / divedTheta) == thetaDiv-1 ? 0 : int(localMaxtheta/divedTheta)), isCutz)].push_back(i);
+		cellNum[make_tuple(int(localMaxr / divedR), (int((double)localMaxtheta / (double)divedTheta + 0.5) == thetaDiv ? 0 : int((double)localMaxtheta/(double)divedTheta + 0.5)), isCutz)].push_back(i);
+
 	}
 
 	PrintCellNum(cellPoints, cellNum);
 
 	return 0;
 }
-	double minr = 1e30;
-	double mintheta = 1e30;
