@@ -149,7 +149,7 @@ void PrintCellNum(const vector<vector<Point> > &cellPoints, const map<tuple<int,
 // argv[2]: divtheta
 // argv[3]: dirname(optional)
 int main(int argc, char* argv[]) {
-	const double EPS = std::numeric_limits<double>::epsilon()*2;
+	const double EPS = std::numeric_limits<double>::epsilon();
 
 	if (argc <= 3) {
 		cerr << "./a.out divr divtheta cutz [dirname(optional)]" << endl;
@@ -187,8 +187,10 @@ int main(int argc, char* argv[]) {
 		double localMinz = 1e30;
 		for (Point p : cellPoints[i]) {
 			Polar po = p.GetPolar();
-			localMaxr = max(localMaxr, po.r);
-			localMaxtheta = max(localMaxtheta, po.theta - mintheta);
+			if(localMaxr <= po.r-EPS){
+				localMaxr = max(localMaxr, po.r);
+				localMaxtheta = max(localMaxtheta, po.theta - mintheta);
+			}
 			localMinz = min(localMinz, po.z);
 		}
 		double divedR = maxr / rDiv + EPS; //dived r
