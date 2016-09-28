@@ -143,13 +143,13 @@ void PrintCellNum(const vector<vector<Point> > &cellPoints, const map<tuple<int,
 	cout << ")" << endl;
 }
 
-const double EPS = 0.0001;
 
 // argv[0]: filename
 // argv[1]: divr
 // argv[2]: divtheta
 // argv[3]: dirname(optional)
 int main(int argc, char* argv[]) {
+	const double EPS = std::numeric_limits<double>::epsilon()*2;
 
 	if (argc <= 3) {
 		cerr << "./a.out divr divtheta cutz [dirname(optional)]" << endl;
