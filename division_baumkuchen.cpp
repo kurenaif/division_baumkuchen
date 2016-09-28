@@ -156,9 +156,9 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}
 	//number of division in the r-direction
-	int rDiv = atoi(argv[1]);
+	double rDiv = atoi(argv[1]);
 	//number of division in the theta-direction
-	int thetaDiv = atoi(argv[2]);
+	double  thetaDiv = atoi(argv[2]);
 	//number of cut in the z-direction
 	double cutz = atof(argv[3]);
 	vector<vector<Point> > cellPoints = GetCellPoints()(argc, argv);
@@ -191,12 +191,19 @@ int main(int argc, char* argv[]) {
 			localMaxtheta = max(localMaxtheta, po.theta - mintheta);
 			localMinz = min(localMinz, po.z);
 		}
-		// cout << "z:" << localMinz << " r:" << localMaxr << " theta:" << localMaxtheta << endl;;
 		double divedR = maxr / rDiv + EPS; //dived r
 		double divedTheta = (maxtheta - mintheta) / thetaDiv + EPS; // dived theta
 		int isCutz = (localMinz < cutz + EPS);
 
-		cellNum[make_tuple(int(localMaxr / divedR), (int((double)localMaxtheta / (double)divedTheta + 0.5) == thetaDiv ? 0 : int((double)localMaxtheta/(double)divedTheta + 0.5)), isCutz)].push_back(i);
+		int nr=localMaxr/maxr*rDiv;
+		int nt= localMaxtheta/(maxtheta - mintheta) * thetaDiv + 0.5 ;
+
+		if(nr==int(rDiv))nr-=1;
+
+ 	  //cout << "z:" << localMinz << " r:" << localMaxr << " theta:" << localMaxtheta << " nr:"<<nr<<" nt:"<<nt<<endl;;
+
+		//cellNum[make_tuple(int(localMaxr / divedR), (int((double)localMaxtheta / (double)divedTheta + 0.5) == thetaDiv ? 0 : int((double)localMaxtheta/(double)divedTheta + 0.5)), isCutz)].push_back(i);
+		cellNum[make_tuple(nr, nt == thetaDiv ? 0 :nt , isCutz)].push_back(i);
 
 	}
 
